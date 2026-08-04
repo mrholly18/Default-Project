@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodOrder - Pre-Order Your Meal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">FoodOrder</a>
+      <nav class="nav">
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="cart-btn" id="cartBtn">
+        Cart (<span id="cartCount">0</span>)
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#menu">Menu</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>Fresh Food, Pre-Ordered<br>Ready When You Arrive</h1>
+      <p>Skip the wait. Order ahead and pick up your meal hot and fresh.</p>
+      <a href="#menu" class="btn btn-primary">Browse Menu</a>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <section class="menu" id="menu">
+    <div class="container">
+      <h2 class="section-title">Our Menu</h2>
+      <div class="menu-filters">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="burgers">Burgers</button>
+        <button class="filter-btn" data-category="pizza">Pizza</button>
+        <button class="filter-btn" data-category="sides">Sides</button>
+        <button class="filter-btn" data-category="drinks">Drinks</button>
+      </div>
+      <div class="menu-grid" id="menuGrid">
+        <!-- Items injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="container about-inner">
+      <div class="about-text">
+        <h2>Why Pre-Order?</h2>
+        <p>No more waiting in line. Choose your pickup time, pay online, and your meal will be ready exactly when you need it.</p>
+        <ul>
+          <li>Choose pickup time</li>
+          <li>Pay securely online</li>
+          <li>Freshly prepared for you</li>
+        </ul>
+      </div>
+      <div class="about-image">
+        <div class="about-placeholder">Prep Time: 0 min wait</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="container contact-inner">
+      <h2 class="section-title">Get in Touch</h2>
+      <form class="contact-form" id="contactForm">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="4" placeholder="Message" required></textarea>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 FoodOrder. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Cart Sidebar -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Your Order</h3>
+      <button class="close-cart" id="closeCart">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="empty-cart">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">Total: $<span id="cartTotal">0.00</span></div>
+      <div class="pickup-time">
+        <label for="pickupTime">Pickup Time:</label>
+        <input type="time" id="pickupTime">
+      </div>
+      <button class="btn btn-primary btn-full" id="checkoutBtn">Place Order</button>
+    </div>
+  </aside>
+
+  <!-- Order Confirmation Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3>Order Confirmed!</h3>
+      <p id="orderSummary"></p>
+      <button class="btn btn-primary" id="closeModal">OK</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
