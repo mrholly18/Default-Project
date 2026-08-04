@@ -4,22 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FoodOrder - Pre-Order Your Meal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Header -->
-  <header class="header">
+  <header class="header" id="header">
     <div class="container header-inner">
-      <a href="#" class="logo">FoodOrder</a>
+      <a href="#" class="logo">
+        <span class="logo-icon">&#127828;</span>
+        <span class="logo-text">Food<span class="accent">Order</span></span>
+      </a>
       <nav class="nav">
-        <a href="#menu">Menu</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="#menu" class="nav-link">Menu</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="nav-link">Contact</a>
       </nav>
-      <button class="cart-btn" id="cartBtn">
-        Cart (<span id="cartCount">0</span>)
-      </button>
+      <div class="header-actions">
+        <button class="cart-btn" id="cartBtn">
+          <svg class="cart-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="m1 1 4 0 2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
       <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -29,23 +42,103 @@
   <!-- Mobile Nav -->
   <div class="mobile-nav" id="mobileNav">
     <a href="#menu">Menu</a>
+    <a href="#features">Features</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </div>
 
   <!-- Hero -->
   <section class="hero">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+    </div>
     <div class="container hero-content">
-      <h1>Fresh Food, Pre-Ordered<br>Ready When You Arrive</h1>
-      <p>Skip the wait. Order ahead and pick up your meal hot and fresh.</p>
-      <a href="#menu" class="btn btn-primary">Browse Menu</a>
+      <div class="hero-badge">Pre-Order & Skip the Wait</div>
+      <h1>Fresh Food,<br>Ready When <span class="highlight">You Arrive</span></h1>
+      <p class="hero-desc">Order ahead, choose your pickup time, and enjoy your meal hot and fresh. No lines, no waiting.</p>
+      <div class="hero-actions">
+        <a href="#menu" class="btn btn-primary btn-lg">
+          Browse Menu
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#about" class="btn btn-ghost btn-lg">Learn More</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Happy Customers</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">15 min</span>
+          <span class="stat-label">Avg Prep Time</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">4.9</span>
+          <span class="stat-label">Rating</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <div class="mouse">
+        <div class="wheel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">How It Works</span>
+        <h2 class="section-title">Simple as <span class="accent">1-2-3</span></h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+              <path d="m9 10 2 2 4-4"/>
+            </svg>
+          </div>
+          <h3>Choose Your Meal</h3>
+          <p>Browse our menu and pick your favorites from burgers to pizza and more.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3>Pick a Time</h3>
+          <p>Select when you want to pick up. We'll have it ready exactly on time.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h3>Grab & Go</h3>
+          <p>Walk in, grab your order, and enjoy. Zero wait time, maximum flavor.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Menu -->
   <section class="menu" id="menu">
     <div class="container">
-      <h2 class="section-title">Our Menu</h2>
+      <div class="section-header">
+        <span class="section-tag">Our Menu</span>
+        <h2 class="section-title">Taste the <span class="accent">Difference</span></h2>
+      </div>
       <div class="menu-filters">
         <button class="filter-btn active" data-category="all">All</button>
         <button class="filter-btn" data-category="burgers">Burgers</button>
@@ -62,30 +155,77 @@
   <!-- About -->
   <section class="about" id="about">
     <div class="container about-inner">
-      <div class="about-text">
-        <h2>Why Pre-Order?</h2>
+      <div class="about-content">
+        <span class="section-tag">Why Choose Us</span>
+        <h2>Why <span class="accent">Pre-Order</span>?</h2>
         <p>No more waiting in line. Choose your pickup time, pay online, and your meal will be ready exactly when you need it.</p>
-        <ul>
-          <li>Choose pickup time</li>
-          <li>Pay securely online</li>
-          <li>Freshly prepared for you</li>
-        </ul>
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="about-feature-icon">&#9201;</div>
+            <div>
+              <h4>Schedule Pickup</h4>
+              <p>Choose any time that works for you</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">&#128274;</div>
+            <div>
+              <h4>Secure Payment</h4>
+              <p>Pay safely online, no cash needed</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">&#128293;</div>
+            <div>
+              <h4>Fresh & Hot</h4>
+              <p>Prepared fresh right when you arrive</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="about-image">
-        <div class="about-placeholder">Prep Time: 0 min wait</div>
+      <div class="about-visual">
+        <div class="about-card about-card-1">
+          <div class="about-card-icon">&#127828;</div>
+          <span>Zero Wait</span>
+        </div>
+        <div class="about-card about-card-2">
+          <div class="about-card-icon">&#11088;</div>
+          <span>Top Rated</span>
+        </div>
+        <div class="about-card about-card-3">
+          <div class="about-card-icon">&#128666;</div>
+          <span>Quick Pickup</span>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Contact -->
   <section class="contact" id="contact">
-    <div class="container contact-inner">
-      <h2 class="section-title">Get in Touch</h2>
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Get in Touch</span>
+        <h2 class="section-title">We'd Love to <span class="accent">Hear</span> From You</h2>
+      </div>
       <form class="contact-form" id="contactForm">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea rows="4" placeholder="Message" required></textarea>
-        <button type="submit" class="btn btn-primary">Send Message</button>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="john@example.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" placeholder="Tell us what you think..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-full">
+          Send Message
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        </button>
       </form>
     </div>
   </section>
@@ -93,7 +233,22 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container footer-inner">
-      <p>&copy; 2026 FoodOrder. All rights reserved.</p>
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <span class="logo-icon">&#127828;</span>
+          <span class="logo-text">Food<span class="accent">Order</span></span>
+        </a>
+        <p>Fresh food, pre-ordered. Ready when you arrive.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#menu">Menu</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-copy">
+        <p>&copy; 2026 FoodOrder. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
@@ -102,27 +257,46 @@
   <aside class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h3>Your Order</h3>
-      <button class="close-cart" id="closeCart">&times;</button>
+      <button class="close-cart" id="closeCart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
     </div>
     <div class="cart-items" id="cartItems">
-      <p class="empty-cart">Your cart is empty.</p>
+      <div class="empty-cart">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="m1 1 4 0 2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <p>Your cart is empty</p>
+        <span>Add items from the menu to get started</span>
+      </div>
     </div>
     <div class="cart-footer">
-      <div class="cart-total">Total: $<span id="cartTotal">0.00</span></div>
+      <div class="cart-total-row">
+        <span>Total</span>
+        <span class="cart-total">$<span id="cartTotal">0.00</span></span>
+      </div>
       <div class="pickup-time">
-        <label for="pickupTime">Pickup Time:</label>
+        <label for="pickupTime">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Pickup Time
+        </label>
         <input type="time" id="pickupTime">
       </div>
-      <button class="btn btn-primary btn-full" id="checkoutBtn">Place Order</button>
+      <button class="btn btn-primary btn-full btn-lg" id="checkoutBtn">
+        Place Order
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
     </div>
   </aside>
 
   <!-- Order Confirmation Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
+      <div class="modal-icon">&#10003;</div>
       <h3>Order Confirmed!</h3>
-      <p id="orderSummary"></p>
-      <button class="btn btn-primary" id="closeModal">OK</button>
+      <div class="modal-details" id="orderSummary"></div>
+      <button class="btn btn-primary btn-lg" id="closeModal">Back to Menu</button>
     </div>
   </div>
 
