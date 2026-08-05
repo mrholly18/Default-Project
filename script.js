@@ -6,11 +6,10 @@ const menuItems = [
   { id: 4, name: "Oreo Cheesecake", category: "dessert", price: 150, emoji: "\uD83C\uDF70" },
 ];
 
-const DELIVERY_FEE = 50;
-
 // State
 let cart = [];
 let selectedDelivery = "pickup";
+let deliveryFee = 0;
 let selectedPayment = "cash";
 
 // DOM Elements
@@ -66,7 +65,7 @@ function renderMenu(category = "all") {
       <div class="menu-card-body">
         <span class="category">${item.category}</span>
         <h3>${item.name}</h3>
-        <div class="price">\u20B1${item.price}</div>
+        <div class="price">&#8369;${item.price}</div>
         <button class="add-btn" onclick="addToCart(${item.id}, this)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
           Add to Order
@@ -161,7 +160,7 @@ function updateCart() {
       <div class="cart-item">
         <div class="cart-item-info">
           <h4>${item.name}</h4>
-          <span class="item-price">\u20B1${itemTotal} ${ci.qty > 1 ? `(x${ci.qty})` : ""}</span>
+          <span class="item-price">&#8369;${itemTotal} ${ci.qty > 1 ? `(x${ci.qty})` : ""}</span>
         </div>
         <div class="cart-item-qty">
           <button class="qty-btn" onclick="changeQty(${item.id}, -1)">
@@ -176,11 +175,10 @@ function updateCart() {
     `;
   }).join("");
 
-  const delivery = selectedDelivery === "lalamove" ? DELIVERY_FEE : 0;
-  const total = subtotal + delivery;
+  const total = subtotal + deliveryFee;
 
   cartSubtotal.textContent = subtotal;
-  deliveryFeeEl.textContent = delivery > 0 ? `\u20B1${delivery}` : "Free";
+  deliveryFeeEl.textContent = deliveryFee > 0 ? `+&#8369;${deliveryFee}` : "Free";
   cartTotal.textContent = total;
 }
 
@@ -202,6 +200,7 @@ document.querySelectorAll(".delivery-btn").forEach(btn => {
     document.querySelectorAll(".delivery-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     selectedDelivery = btn.dataset.delivery;
+    deliveryFee = parseInt(btn.dataset.fee) || 0;
     updateCart();
   });
 });
@@ -224,23 +223,26 @@ function checkout() {
     return sum + item.price * ci.qty;
   }, 0);
 
-  const delivery = selectedDelivery === "lalamove" ? DELIVERY_FEE : 0;
-  const total = subtotal + delivery;
+  const total = subtotal + deliveryFee;
 
   const itemsList = cart.map(ci => {
     const item = menuItems.find(m => m.id === ci.id);
     return `${item.emoji} ${item.name} x${ci.qty}`;
   }).join("<br>");
 
-  const deliveryLabel = selectedDelivery === "pickup" ? "Pickup" : "Lalamove Delivery (+\u20B150)";
+  const deliveryLabels = {
+    pickup: "Pickup",
+    nearby: "Nearby Delivery (+&#8369;50)",
+    lalamove: "Lalamove Delivery"
+  };
   const paymentLabel = selectedPayment.charAt(0).toUpperCase() + selectedPayment.slice(1);
 
   orderSummary.innerHTML = `
     <strong>Items:</strong><br>${itemsList}<br><br>
-    <strong>Subtotal:</strong> \u20B1${subtotal}<br>
-    <strong>Delivery:</strong> ${delivery > 0 ? `\u20B1${delivery}` : "Free"}<br>
-    <strong>Total:</strong> \u20B1${total}<br><br>
-    <strong>Delivery:</strong> ${deliveryLabel}<br>
+    <strong>Subtotal:</strong> &#8369;${subtotal}<br>
+    <strong>Delivery:</strong> ${deliveryFee > 0 ? `&#8369;${deliveryFee}` : "Free"}<br>
+    <strong>Total:</strong> &#8369;${total}<br><br>
+    <strong>Delivery:</strong> ${deliveryLabels[selectedDelivery]}<br>
     <strong>Payment:</strong> ${paymentLabel}
   `;
 
@@ -248,6 +250,7 @@ function checkout() {
   closeCartSidebar();
   cart = [];
   selectedDelivery = "pickup";
+  deliveryFee = 0;
   selectedPayment = "cash";
   updateCart();
 
