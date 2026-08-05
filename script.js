@@ -1,17 +1,9 @@
 // Menu Data
 const menuItems = [
-  { id: 1, name: "Classic Burger", category: "burgers", price: 8.99, emoji: "\uD83C\uDF54" },
-  { id: 2, name: "Cheese Burger", category: "burgers", price: 9.99, emoji: "\uD83C\uDF54" },
-  { id: 3, name: "BBQ Bacon Burger", category: "burgers", price: 11.99, emoji: "\uD83C\uDF54" },
-  { id: 4, name: "Margherita Pizza", category: "pizza", price: 12.99, emoji: "\uD83C\uDF55" },
-  { id: 5, name: "Pepperoni Pizza", category: "pizza", price: 13.99, emoji: "\uD83C\uDF55" },
-  { id: 6, name: "Hawaiian Pizza", category: "pizza", price: 13.99, emoji: "\uD83C\uDF55" },
-  { id: 7, name: "French Fries", category: "sides", price: 4.99, emoji: "\uD83C\uDF5F" },
-  { id: 8, name: "Onion Rings", category: "sides", price: 5.49, emoji: "\uD83E\uDDC5" },
-  { id: 9, name: "Coleslaw", category: "sides", price: 3.49, emoji: "\uD83E\uDD57" },
-  { id: 10, name: "Cola", category: "drinks", price: 2.49, emoji: "\uD83E\uDD64" },
-  { id: 11, name: "Lemonade", category: "drinks", price: 3.49, emoji: "\uD83C\uDF4B" },
-  { id: 12, name: "Iced Tea", category: "drinks", price: 2.99, emoji: "\uD83C\uDF75" },
+  { id: 1, name: "Lasagna", category: "pasta", price: 200, emoji: "\uD83C\uDF5D" },
+  { id: 2, name: "Carbonara", category: "pasta", price: 180, emoji: "\uD83C\uDF5D" },
+  { id: 3, name: "Mango Graham", category: "dessert", price: 150, emoji: "\uD83C\uDF70" },
+  { id: 4, name: "Oreo Cheesecake", category: "dessert", price: 150, emoji: "\uD83C\uDF70" },
 ];
 
 // State
@@ -49,7 +41,7 @@ function renderMenu(category = "all") {
       <div class="menu-card-body">
         <span class="category">${item.category}</span>
         <h3>${item.name}</h3>
-        <div class="price">$${item.price.toFixed(2)}</div>
+        <div class="price">\u20B1${item.price.toFixed(0)}</div>
         <button class="add-btn" onclick="addToCart(${item.id}, this)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
           Add to Cart
@@ -130,7 +122,7 @@ function updateCart() {
         <span>Add items from the menu to get started</span>
       </div>
     `;
-    cartTotal.textContent = "0.00";
+    cartTotal.textContent = "0";
     return;
   }
 
@@ -143,7 +135,7 @@ function updateCart() {
       <div class="cart-item">
         <div class="cart-item-info">
           <h4>${item.name}</h4>
-          <span class="item-price">$${subtotal.toFixed(2)}</span>
+          <span class="item-price">\u20B1${subtotal.toFixed(0)}</span>
         </div>
         <div class="cart-item-qty">
           <button class="qty-btn" onclick="changeQty(${item.id}, -1)">
@@ -158,7 +150,7 @@ function updateCart() {
     `;
   }).join("");
 
-  cartTotal.textContent = total.toFixed(2);
+    cartTotal.textContent = total.toFixed(0);
 }
 
 function openCart() {
@@ -190,7 +182,7 @@ function checkout() {
 
   orderSummary.innerHTML = `
     <strong>Items:</strong><br>${itemsList}<br><br>
-    <strong>Total:</strong> $${total.toFixed(2)}<br>
+    <strong>Total:</strong> \u20B1${total.toFixed(0)}<br>
     <strong>Pickup:</strong> ${pickupTime}
   `;
 
