@@ -6,7 +6,7 @@
   <title>A & J Signature Tubs - Pre-Order Your Meal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,20 +15,33 @@
   <header class="header" id="header">
     <div class="container header-inner">
       <a href="#" class="logo">
-        <span class="logo-icon">&#128375;</span>
-        <span class="logo-text">A & J <span class="accent">Tubs</span></span>
+        <div class="logo-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <rect x="6" y="14" width="24" height="16" rx="3" fill="currentColor"/>
+            <path d="M8 14C8 10 12 6 18 6C24 6 28 10 28 14" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <ellipse cx="18" cy="14" rx="12" ry="3" fill="currentColor"/>
+            <circle cx="13" cy="20" r="2" fill="var(--bg)"/>
+            <circle cx="20" cy="18" r="1.5" fill="var(--bg)"/>
+            <circle cx="16" cy="24" r="1.8" fill="var(--bg)"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">A & J</span>
+          <span class="logo-tagline">Signature Tubs</span>
+        </div>
       </a>
       <nav class="nav">
         <a href="#menu" class="nav-link">Menu</a>
-        <a href="#features" class="nav-link">Features</a>
+        <a href="#features" class="nav-link">How It Works</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
       <div class="header-actions">
         <button class="cart-btn" id="cartBtn">
-          <svg class="cart-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-            <path d="m1 1 4 0 2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
           </svg>
           <span class="cart-count" id="cartCount">0</span>
         </button>
@@ -42,34 +55,32 @@
   <!-- Mobile Nav -->
   <div class="mobile-nav" id="mobileNav">
     <a href="#menu">Menu</a>
-    <a href="#features">Features</a>
+    <a href="#features">How It Works</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </div>
 
   <!-- Hero -->
   <section class="hero">
-    <div class="hero-bg-shapes">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-      <div class="shape shape-4"></div>
+    <div class="hero-bg">
+      <div class="hero-grain"></div>
+      <div class="hero-gradient"></div>
     </div>
     <div class="container hero-content">
       <div class="hero-badge">Pre-Order & Skip the Wait</div>
-      <h1>Fresh Food,<br>Ready When <span class="highlight">You Arrive</span></h1>
-      <p class="hero-desc">Order ahead, choose your pickup time, and enjoy your signature tub fresh. No lines, no waiting.</p>
+      <h1>Signature Tubs,<br><span class="accent">Made Fresh</span> for You</h1>
+      <p class="hero-desc">Order ahead, choose your pickup time, and enjoy your favorite pasta or dessert tub fresh. No lines, no waiting.</p>
       <div class="hero-actions">
-        <a href="#menu" class="btn btn-primary btn-lg">
-          Browse Menu
+        <a href="#menu" class="btn btn-primary">
+          Order Now
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
-        <a href="#about" class="btn btn-ghost btn-lg">Learn More</a>
+        <a href="#about" class="btn btn-outline">Learn More</a>
       </div>
     </div>
-    <div class="hero-scroll-indicator">
-      <div class="mouse">
-        <div class="wheel"></div>
+    <div class="hero-scroll">
+      <div class="scroll-indicator">
+        <div class="scroll-line"></div>
       </div>
     </div>
   </section>
@@ -83,8 +94,9 @@
       </div>
       <div class="features-grid">
         <div class="feature-card">
+          <div class="feature-number">01</div>
           <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
               <path d="m9 10 2 2 4-4"/>
             </svg>
@@ -93,8 +105,9 @@
           <p>Browse our menu and pick your favorite pasta or dessert tub.</p>
         </div>
         <div class="feature-card">
+          <div class="feature-number">02</div>
           <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <polyline points="12 6 12 12 16 14"/>
             </svg>
@@ -103,14 +116,15 @@
           <p>Select when you want to pick up. We'll have it ready exactly on time.</p>
         </div>
         <div class="feature-card">
+          <div class="feature-number">03</div>
           <div class="feature-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
               <polyline points="22 4 12 14.01 9 11.01"/>
             </svg>
           </div>
           <h3>Grab & Go</h3>
-          <p>Walk in, grab your order, and enjoy. Zero wait time, maximum flavor.</p>
+          <p>Walk in, grab your order, and enjoy. Zero wait time.</p>
         </div>
       </div>
     </div>
@@ -143,21 +157,27 @@
         <p>No more waiting in line. Choose your pickup time, pay online, and your signature tub will be ready exactly when you need it.</p>
         <div class="about-features">
           <div class="about-feature">
-            <div class="about-feature-icon">&#9201;</div>
+            <div class="about-feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
             <div>
               <h4>Schedule Pickup</h4>
               <p>Choose any time that works for you</p>
             </div>
           </div>
           <div class="about-feature">
-            <div class="about-feature-icon">&#128274;</div>
+            <div class="about-feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
             <div>
               <h4>Secure Payment</h4>
               <p>Pay safely online, no cash needed</p>
             </div>
           </div>
           <div class="about-feature">
-            <div class="about-feature-icon">&#128293;</div>
+            <div class="about-feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
             <div>
               <h4>Fresh & Hot</h4>
               <p>Prepared fresh right when you arrive</p>
@@ -167,15 +187,21 @@
       </div>
       <div class="about-visual">
         <div class="about-card about-card-1">
-          <div class="about-card-icon">&#128375;</div>
-          <span>Freshly Made</span>
+          <div class="about-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <span>Made with Love</span>
         </div>
         <div class="about-card about-card-2">
-          <div class="about-card-icon">&#10003;</div>
-          <span>Quality Ingredients</span>
+          <div class="about-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span>Premium Ingredients</span>
         </div>
         <div class="about-card about-card-3">
-          <div class="about-card-icon">&#9201;</div>
+          <div class="about-card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
           <span>Quick Pickup</span>
         </div>
       </div>
@@ -193,18 +219,18 @@
         <div class="form-row">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" id="name" placeholder="John Doe" required>
+            <input type="text" id="name" placeholder="Your name" required>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="john@example.com" required>
+            <input type="email" id="email" placeholder="your@email.com" required>
           </div>
         </div>
         <div class="form-group">
           <label for="message">Message</label>
-          <textarea id="message" rows="5" placeholder="Tell us what you think..." required></textarea>
+          <textarea id="message" rows="4" placeholder="Tell us what you think..." required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-full">
+        <button type="submit" class="btn btn-primary btn-full">
           Send Message
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
         </button>
@@ -217,19 +243,32 @@
     <div class="container footer-inner">
       <div class="footer-brand">
         <a href="#" class="logo">
-          <span class="logo-icon">&#128375;</span>
-          <span class="logo-text">A & J <span class="accent">Tubs</span></span>
+          <div class="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+              <rect x="6" y="14" width="24" height="16" rx="3" fill="currentColor"/>
+              <path d="M8 14C8 10 12 6 18 6C24 6 28 10 28 14" stroke="currentColor" stroke-width="2.5" fill="none"/>
+              <ellipse cx="18" cy="14" rx="12" ry="3" fill="currentColor"/>
+              <circle cx="13" cy="20" r="2" fill="var(--dark-bg)"/>
+              <circle cx="20" cy="18" r="1.5" fill="var(--dark-bg)"/>
+              <circle cx="16" cy="24" r="1.8" fill="var(--dark-bg)"/>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <span class="logo-name">A & J</span>
+            <span class="logo-tagline">Signature Tubs</span>
+          </div>
         </a>
-        <p>A & J Signature Tubs - Fresh food, pre-ordered. Ready when you arrive.</p>
+        <p>Fresh food, pre-ordered. Ready when you arrive.</p>
       </div>
       <div class="footer-links">
         <a href="#menu">Menu</a>
-        <a href="#features">Features</a>
+        <a href="#features">How It Works</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
       </div>
       <div class="footer-copy">
-        <p>&copy; 2026 A & J Signature Tubs. All rights reserved.</p>
+        <p>&copy; 2026 A & J Signature Tubs</p>
+        <p>All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -240,14 +279,15 @@
     <div class="cart-header">
       <h3>Your Order</h3>
       <button class="close-cart" id="closeCart">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </button>
     </div>
     <div class="cart-items" id="cartItems">
       <div class="empty-cart">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-          <path d="m1 1 4 0 2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
         </svg>
         <p>Your cart is empty</p>
         <span>Add items from the menu to get started</span>
@@ -260,12 +300,12 @@
       </div>
       <div class="pickup-time">
         <label for="pickupTime">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           Pickup Time
         </label>
         <input type="time" id="pickupTime">
       </div>
-      <button class="btn btn-primary btn-full btn-lg" id="checkoutBtn">
+      <button class="btn btn-primary btn-full" id="checkoutBtn">
         Place Order
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </button>
@@ -275,10 +315,12 @@
   <!-- Order Confirmation Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
-      <div class="modal-icon">&#10003;</div>
+      <div class="modal-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
       <h3>Order Confirmed!</h3>
       <div class="modal-details" id="orderSummary"></div>
-      <button class="btn btn-primary btn-lg" id="closeModal">Back to Menu</button>
+      <button class="btn btn-primary" id="closeModal">Back to Menu</button>
     </div>
   </div>
 

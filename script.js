@@ -43,8 +43,8 @@ function renderMenu(category = "all") {
         <h3>${item.name}</h3>
         <div class="price">\u20B1${item.price.toFixed(0)}</div>
         <button class="add-btn" onclick="addToCart(${item.id}, this)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-          Add to Cart
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          Add to Order
         </button>
       </div>
     </div>
@@ -65,21 +65,21 @@ function addToCart(id, btnEl) {
   if (btnEl) {
     btnEl.classList.add("added");
     btnEl.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       Added!
     `;
     setTimeout(() => {
       btnEl.classList.remove("added");
       btnEl.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-        Add to Cart
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Add to Order
       `;
     }, 1200);
   }
 
   // Bounce cart count
   cartCount.classList.add("show");
-  cartCount.style.transform = "scale(1.4)";
+  cartCount.style.transform = "scale(1.3)";
   setTimeout(() => { cartCount.style.transform = "scale(1)"; }, 200);
 
   openCart();
@@ -114,9 +114,10 @@ function updateCart() {
   if (cart.length === 0) {
     cartItems.innerHTML = `
       <div class="empty-cart">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-          <path d="m1 1 4 0 2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
         </svg>
         <p>Your cart is empty</p>
         <span>Add items from the menu to get started</span>
@@ -139,18 +140,18 @@ function updateCart() {
         </div>
         <div class="cart-item-qty">
           <button class="qty-btn" onclick="changeQty(${item.id}, -1)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
           </button>
           <span>${ci.qty}</span>
           <button class="qty-btn" onclick="changeQty(${item.id}, 1)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
           </button>
         </div>
       </div>
     `;
   }).join("");
 
-    cartTotal.textContent = total.toFixed(0);
+  cartTotal.textContent = total.toFixed(0);
 }
 
 function openCart() {
@@ -213,7 +214,6 @@ hamburger.addEventListener("click", () => {
   mobileNav.classList.toggle("open");
 });
 
-// Close mobile nav on link click
 mobileNav.querySelectorAll("a").forEach(link => {
   link.addEventListener("click", () => {
     hamburger.classList.remove("active");
@@ -228,7 +228,7 @@ contactForm.addEventListener("submit", (e) => {
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
     Sent!
   `;
-  btn.style.background = "#10b981";
+  btn.style.background = "#16a34a";
   setTimeout(() => {
     btn.innerHTML = `Send Message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>`;
     btn.style.background = "";
@@ -236,12 +236,7 @@ contactForm.addEventListener("submit", (e) => {
   }, 2000);
 });
 
-// Scroll reveal animation
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: "0px 0px -50px 0px"
-};
-
+// Scroll reveal
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -250,15 +245,13 @@ const observer = new IntersectionObserver((entries) => {
       observer.unobserve(entry.target);
     }
   });
-}, observerOptions);
+}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
 
-// Observe elements for scroll animation
 function initScrollAnimations() {
-  const animateElements = document.querySelectorAll(".feature-card, .menu-card, .about-feature, .about-card, .contact-form");
-  animateElements.forEach((el, i) => {
+  document.querySelectorAll(".feature-card, .menu-card, .about-feature, .about-card, .contact-form").forEach((el, i) => {
     el.style.opacity = "0";
-    el.style.transform = "translateY(30px)";
-    el.style.transition = `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s`;
+    el.style.transform = "translateY(20px)";
+    el.style.transition = `opacity 0.5s ease ${i * 0.08}s, transform 0.5s ease ${i * 0.08}s`;
     observer.observe(el);
   });
 }
