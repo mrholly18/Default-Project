@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,6 +31,10 @@
         </div>
       </a>
       <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
         <button class="cart-btn" id="cartBtn" aria-label="Open cart">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
@@ -70,7 +74,7 @@
     </div>
     <div class="container hero-content">
       <h1>Signature Tubs,<br><span class="accent">Made Fresh</span> for You</h1>
-      <p class="hero-desc">Pre-order your favorite pasta or dessert tub. Pickup at our place or get it delivered.</p>
+      <p class="hero-desc">Pre-order your favorite pasta, dessert, or champorado tub. Pickup at our place or get it delivered.</p>
       <div class="hero-actions">
         <a href="#menu" class="btn btn-primary">
           Order Now
@@ -127,7 +131,7 @@
             </svg>
           </div>
           <h3>Pickup or Delivery</h3>
-          <p>Pick up at our place, nearby delivery (+&#8369;50), or Lalamove for outside areas.</p>
+          <p>Pick up, nearby delivery (+&#8369;50), or Lalamove for outside areas.</p>
         </div>
       </div>
     </div>
@@ -144,6 +148,7 @@
         <button class="filter-btn active" data-category="all">All</button>
         <button class="filter-btn" data-category="pasta">Pasta</button>
         <button class="filter-btn" data-category="dessert">Dessert</button>
+        <button class="filter-btn" data-category="others">Others</button>
       </div>
       <div class="menu-grid" id="menuGrid"></div>
     </div>
@@ -155,7 +160,7 @@
       <div class="about-content">
         <span class="section-tag">About Us</span>
         <h2>Made with <span class="accent">Love</span></h2>
-        <p>A & J Signature Tubs serves freshly prepared pasta and dessert tubs for every release. We pre-order to ensure quality and freshness for every customer.</p>
+        <p>A & J Signature Tubs serves freshly prepared pasta, dessert, and champorado tubs for every release. We pre-order to ensure quality and freshness for every customer.</p>
         <div class="about-details">
           <div class="about-detail">
             <span class="about-detail-label">Payment</span>
@@ -241,12 +246,12 @@
             <span class="logo-tagline">Signature Tubs</span>
           </div>
         </a>
-        <p>Freshly made pasta and dessert tubs, pre-ordered just for you.</p>
+        <p>Freshly made pasta, dessert, and champorado tubs, pre-ordered just for you.</p>
       </div>
       <div class="footer-info">
         <h4>Contact</h4>
-        <p>hello@ajsignaturetubs.com</p>
-        <p>0917 123 4567</p>
+        <p>allancabase13@gmail.com</p>
+        <p>09669170001</p>
       </div>
       <div class="footer-copy">
         <p>&copy; 2026 A & J Signature Tubs</p>
@@ -323,15 +328,59 @@
     </div>
   </aside>
 
-  <!-- Order Confirmation Modal -->
+  <!-- Receipt Modal -->
   <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <div class="modal-icon">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    <div class="modal receipt-modal">
+      <div class="receipt">
+        <div class="receipt-header">
+          <div class="receipt-logo">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <rect x="6" y="14" width="24" height="16" rx="3" fill="var(--dark)"/>
+              <path d="M8 14C8 10 12 6 18 6C24 6 28 10 28 14" stroke="var(--dark)" stroke-width="2.5" fill="none"/>
+              <ellipse cx="18" cy="14" rx="12" ry="3" fill="var(--dark)"/>
+            </svg>
+          </div>
+          <h3>A & J Signature Tubs</h3>
+          <p class="receipt-date" id="receiptDate"></p>
+          <p class="receipt-id" id="receiptId"></p>
+        </div>
+        <div class="receipt-divider"></div>
+        <div class="receipt-items" id="receiptItems"></div>
+        <div class="receipt-divider"></div>
+        <div class="receipt-totals">
+          <div class="receipt-row">
+            <span>Subtotal</span>
+            <span id="receiptSubtotal"></span>
+          </div>
+          <div class="receipt-row">
+            <span>Delivery Fee</span>
+            <span id="receiptDelivery"></span>
+          </div>
+          <div class="receipt-row receipt-total">
+            <span>TOTAL</span>
+            <span id="receiptTotal"></span>
+          </div>
+        </div>
+        <div class="receipt-divider"></div>
+        <div class="receipt-details">
+          <div class="receipt-row">
+            <span>Delivery</span>
+            <span id="receiptDeliveryType"></span>
+          </div>
+          <div class="receipt-row">
+            <span>Payment</span>
+            <span id="receiptPayment"></span>
+          </div>
+        </div>
+        <div class="receipt-footer">
+          <p>Thank you for your order!</p>
+          <p class="receipt-contact">allancabase13@gmail.com | 09669170001</p>
+        </div>
       </div>
-      <h3>Order Confirmed!</h3>
-      <div class="modal-details" id="orderSummary"></div>
-      <button class="btn btn-primary" id="closeModal">Back to Menu</button>
+      <button class="btn btn-primary" id="closeModal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        Order Confirmed
+      </button>
     </div>
   </div>
 

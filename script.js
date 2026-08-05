@@ -1,137 +1,128 @@
-// Menu Data
-const menuItems = [
-  { id: 1, name: "Lasagna", category: "pasta", price: 200, emoji: "\uD83C\uDF5D" },
-  { id: 2, name: "Carbonara", category: "pasta", price: 180, emoji: "\uD83C\uDF5D" },
-  { id: 3, name: "Mango Graham", category: "dessert", price: 150, emoji: "\uD83C\uDF70" },
-  { id: 4, name: "Oreo Cheesecake", category: "dessert", price: 150, emoji: "\uD83C\uDF70" },
+const menu = [
+  { id: 1, name: "Lasagna", desc: "Classic layered pasta with rich meat sauce", price: 200, category: "pasta", icon: "🍝" },
+  { id: 2, name: "Carbonara", desc: "Creamy egg-based pasta with crispy bits", price: 180, category: "pasta", icon: "🧀" },
+  { id: 3, name: "Mango Graham", desc: "Sweet mangoes layered with graham crackers", price: 150, category: "dessert", icon: "🥭" },
+  { id: 4, name: "Oreo Cheesecake", desc: "No-bake cheesecake with Oreo cookie crust", price: 150, category: "dessert", icon: "🍪" },
+  { id: 5, name: "Champorado", desc: "Chocolate rice porridge", price: 50, category: "others", icon: "🍫" }
 ];
 
-// State
 let cart = [];
 let selectedDelivery = "pickup";
-let deliveryFee = 0;
 let selectedPayment = "cash";
 
-// DOM Elements
+// DOM
 const menuGrid = document.getElementById("menuGrid");
-const cartBtn = document.getElementById("cartBtn");
-const cartSidebar = document.getElementById("cartSidebar");
-const overlay = document.getElementById("overlay");
-const closeCart = document.getElementById("closeCart");
 const cartItems = document.getElementById("cartItems");
 const cartCount = document.getElementById("cartCount");
 const cartSubtotal = document.getElementById("cartSubtotal");
+const deliveryFee = document.getElementById("deliveryFee");
 const cartTotal = document.getElementById("cartTotal");
-const deliveryFeeEl = document.getElementById("deliveryFee");
+const cartSidebar = document.getElementById("cartSidebar");
+const overlay = document.getElementById("overlay");
+const cartBtn = document.getElementById("cartBtn");
+const closeCart = document.getElementById("closeCart");
 const checkoutBtn = document.getElementById("checkoutBtn");
-const modalOverlay = document.getElementById("modalOverlay");
-const closeModalBtn = document.getElementById("closeModal");
-const orderSummary = document.getElementById("orderSummary");
+const contactForm = document.getElementById("contactForm");
 const menuToggle = document.getElementById("menuToggle");
 const fullscreenNav = document.getElementById("fullscreenNav");
 const navClose = document.getElementById("navClose");
-const contactForm = document.getElementById("contactForm");
-const header = document.getElementById("header");
+const modalOverlay = document.getElementById("modalOverlay");
+const closeModal = document.getElementById("closeModal");
+const themeToggle = document.getElementById("themeToggle");
 
-// Scroll Header
-window.addEventListener("scroll", () => {
-  header.classList.toggle("scrolled", window.scrollY > 50);
+// Theme
+const savedTheme = localStorage.getItem("theme") || "light";
+document.documentElement.setAttribute("data-theme", savedTheme);
+
+themeToggle.addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  const next = current === "light" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("theme", next);
 });
 
 // Fullscreen Nav
-menuToggle.addEventListener("click", () => {
-  fullscreenNav.classList.add("open");
-  document.body.style.overflow = "hidden";
-});
-
-navClose.addEventListener("click", () => {
-  fullscreenNav.classList.remove("open");
-  document.body.style.overflow = "";
-});
-
+menuToggle.addEventListener("click", () => fullscreenNav.classList.add("active"));
+navClose.addEventListener("click", () => fullscreenNav.classList.remove("active"));
 fullscreenNav.querySelectorAll(".fullscreen-link").forEach(link => {
-  link.addEventListener("click", () => {
-    fullscreenNav.classList.remove("open");
-    document.body.style.overflow = "";
-  });
+  link.addEventListener("click", () => fullscreenNav.classList.remove("active"));
 });
 
-// Render Menu
+// Header scroll
+window.addEventListener("scroll", () => {
+  document.getElementById("header").classList.toggle("scrolled", window.scrollY > 10);
+});
+
+// Menu
 function renderMenu(category = "all") {
-  const items = category === "all" ? menuItems : menuItems.filter(i => i.category === category);
-  menuGrid.innerHTML = items.map((item, idx) => `
-    <div class="menu-card" data-category="${item.category}" style="animation-delay: ${idx * 0.08}s">
-      <div class="menu-card-image">${item.emoji}</div>
-      <div class="menu-card-body">
-        <span class="category">${item.category}</span>
-        <h3>${item.name}</h3>
-        <div class="price">&#8369;${item.price}</div>
-        <button class="add-btn" onclick="addToCart(${item.id}, this)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-          Add to Order
-        </button>
+  const filtered = category === "all" ? menu : menu.filter(m => m.category === category);
+  menuGrid.innerHTML = filtered.map(item => `
+    <div class="menu-card" data-id="${item.id}">
+      <div class="menu-card-img">
+        <span class="menu-card-icon">${item.icon}</span>
+      </div>
+      <div class="menu-card-info">
+        <div class="menu-card-name">${item.name}</div>
+        <div class="menu-card-desc">${item.desc}</div>
+        <div class="menu-card-bottom">
+          <span class="menu-card-price">&#8369;${item.price}</span>
+          <button class="add-btn" onclick="addToCart(${item.id})">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   `).join("");
 }
 
-// Cart Functions
-function addToCart(id, btnEl) {
-  const existing = cart.find(i => i.id === id);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({ id, qty: 1 });
-  }
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderMenu(btn.dataset.category);
+  });
+});
+
+// Cart
+function addToCart(id) {
+  const item = menu.find(m => m.id === id);
+  const existing = cart.find(c => c.id === id);
+  if (existing) existing.qty++;
+  else cart.push({ ...item, qty: 1 });
   updateCart();
-
-  if (btnEl) {
-    btnEl.classList.add("added");
-    btnEl.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-      Added!
-    `;
-    setTimeout(() => {
-      btnEl.classList.remove("added");
-      btnEl.innerHTML = `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-        Add to Order
-      `;
-    }, 1200);
-  }
-
-  cartCount.classList.add("show");
-  cartCount.style.transform = "scale(1.3)";
-  setTimeout(() => { cartCount.style.transform = "scale(1)"; }, 200);
-
-  openCart();
+  cartBtn.classList.add("added");
+  setTimeout(() => cartBtn.classList.remove("added"), 300);
 }
 
 function removeFromCart(id) {
-  cart = cart.filter(i => i.id !== id);
+  cart = cart.filter(c => c.id !== id);
   updateCart();
 }
 
 function changeQty(id, delta) {
-  const item = cart.find(i => i.id === id);
+  const item = cart.find(c => c.id === id);
   if (!item) return;
   item.qty += delta;
-  if (item.qty <= 0) {
-    removeFromCart(id);
-  } else {
-    updateCart();
-  }
+  if (item.qty <= 0) removeFromCart(id);
+  else updateCart();
+}
+
+function getDeliveryFee() {
+  if (selectedDelivery === "nearby") return 50;
+  return 0;
 }
 
 function updateCart() {
-  const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
-  cartCount.textContent = totalItems;
+  const totalItems = cart.reduce((sum, c) => sum + c.qty, 0);
+  const subtotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
+  const fee = getDeliveryFee();
+  const total = subtotal + fee;
 
-  if (totalItems > 0) {
-    cartCount.classList.add("show");
-  } else {
-    cartCount.classList.remove("show");
-  }
+  cartCount.textContent = totalItems;
+  cartCount.classList.toggle("visible", totalItems > 0);
+  cartSubtotal.textContent = subtotal;
+  deliveryFee.textContent = fee === 0 ? "Free" : fee;
+  cartTotal.textContent = total;
 
   if (cart.length === 0) {
     cartItems.innerHTML = `
@@ -143,69 +134,40 @@ function updateCart() {
         </svg>
         <p>Your cart is empty</p>
         <span>Add items from the menu</span>
-      </div>
-    `;
-    cartSubtotal.textContent = "0";
-    cartTotal.textContent = "0";
-    deliveryFeeEl.textContent = "-";
+      </div>`;
     return;
   }
 
-  let subtotal = 0;
-  cartItems.innerHTML = cart.map(ci => {
-    const item = menuItems.find(m => m.id === ci.id);
-    const itemTotal = item.price * ci.qty;
-    subtotal += itemTotal;
-    return `
-      <div class="cart-item">
-        <div class="cart-item-info">
-          <h4>${item.name}</h4>
-          <span class="item-price">&#8369;${itemTotal} ${ci.qty > 1 ? `(x${ci.qty})` : ""}</span>
-        </div>
-        <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
-          </button>
-          <span>${ci.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-          </button>
+  cartItems.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${item.icon}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+          <span class="cart-item-qty">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
         </div>
       </div>
-    `;
-  }).join("");
-
-  const total = subtotal + deliveryFee;
-
-  cartSubtotal.textContent = subtotal;
-  deliveryFeeEl.textContent = deliveryFee > 0 ? `+&#8369;${deliveryFee}` : "Free";
-  cartTotal.textContent = total;
+      <div class="cart-item-price">&#8369;${item.price * item.qty}</div>
+      <button class="cart-item-remove" onclick="removeFromCart(${item.id})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  `).join("");
 }
 
-function openCart() {
-  cartSidebar.classList.add("open");
-  overlay.classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-
-function closeCartSidebar() {
-  cartSidebar.classList.remove("open");
-  overlay.classList.remove("open");
-  document.body.style.overflow = "";
-}
-
-// Delivery Options
+// Delivery buttons
 document.querySelectorAll(".delivery-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".delivery-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     selectedDelivery = btn.dataset.delivery;
-    deliveryFee = parseInt(btn.dataset.fee) || 0;
     updateCart();
   });
 });
 
-// Payment Options
+// Payment buttons
 document.querySelectorAll(".payment-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
@@ -214,103 +176,86 @@ document.querySelectorAll(".payment-btn").forEach(btn => {
   });
 });
 
-// Checkout
-function checkout() {
-  if (cart.length === 0) return;
-
-  const subtotal = cart.reduce((sum, ci) => {
-    const item = menuItems.find(m => m.id === ci.id);
-    return sum + item.price * ci.qty;
-  }, 0);
-
-  const total = subtotal + deliveryFee;
-
-  const itemsList = cart.map(ci => {
-    const item = menuItems.find(m => m.id === ci.id);
-    return `${item.emoji} ${item.name} x${ci.qty}`;
-  }).join("<br>");
-
-  const deliveryLabels = {
-    pickup: "Pickup",
-    nearby: "Nearby Delivery (+&#8369;50)",
-    lalamove: "Lalamove Delivery"
-  };
-  const paymentLabel = selectedPayment.charAt(0).toUpperCase() + selectedPayment.slice(1);
-
-  orderSummary.innerHTML = `
-    <strong>Items:</strong><br>${itemsList}<br><br>
-    <strong>Subtotal:</strong> &#8369;${subtotal}<br>
-    <strong>Delivery:</strong> ${deliveryFee > 0 ? `&#8369;${deliveryFee}` : "Free"}<br>
-    <strong>Total:</strong> &#8369;${total}<br><br>
-    <strong>Delivery:</strong> ${deliveryLabels[selectedDelivery]}<br>
-    <strong>Payment:</strong> ${paymentLabel}
-  `;
-
-  modalOverlay.classList.add("open");
-  closeCartSidebar();
-  cart = [];
-  selectedDelivery = "pickup";
-  deliveryFee = 0;
-  selectedPayment = "cash";
-  updateCart();
-
-  document.querySelectorAll(".delivery-btn").forEach(b => b.classList.remove("active"));
-  document.querySelector('.delivery-btn[data-delivery="pickup"]').classList.add("active");
-  document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
-  document.querySelector('.payment-btn[data-payment="cash"]').classList.add("active");
-}
-
-// Filter Buttons
-document.querySelectorAll(".filter-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    renderMenu(btn.dataset.category);
-  });
+// Cart open/close
+cartBtn.addEventListener("click", () => {
+  cartSidebar.classList.add("open");
+  overlay.classList.add("active");
 });
 
-// Event Listeners
-cartBtn.addEventListener("click", openCart);
+function closeCartSidebar() {
+  cartSidebar.classList.remove("open");
+  overlay.classList.remove("active");
+}
+
 closeCart.addEventListener("click", closeCartSidebar);
 overlay.addEventListener("click", closeCartSidebar);
-checkoutBtn.addEventListener("click", checkout);
-closeModalBtn.addEventListener("click", () => modalOverlay.classList.remove("open"));
 
+// Receipt
+function generateReceipt() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const timeStr = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  const orderId = "AJ-" + now.getFullYear() + String(now.getMonth() + 1).padStart(2, "0") + String(now.getDate()).padStart(2, "0") + "-" + String(Math.floor(Math.random() * 9000) + 1000);
+
+  const subtotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
+  const fee = getDeliveryFee();
+  const total = subtotal + fee;
+
+  const deliveryLabels = { pickup: "Pickup (Free)", nearby: "Nearby Delivery (+&#8369;50)", lalamove: "Lalamove (Arrange with rider)" };
+  const paymentLabels = { cash: "Cash", gcash: "GCash", bank: "Bank Transfer" };
+
+  document.getElementById("receiptDate").textContent = dateStr + " " + timeStr;
+  document.getElementById("receiptId").textContent = orderId;
+  document.getElementById("receiptSubtotal").textContent = "\u20B1" + subtotal;
+  document.getElementById("receiptDelivery").textContent = fee === 0 ? "Free" : "\u20B1" + fee;
+  document.getElementById("receiptTotal").textContent = "\u20B1" + total;
+  document.getElementById("receiptDeliveryType").textContent = deliveryLabels[selectedDelivery];
+  document.getElementById("receiptPayment").textContent = paymentLabels[selectedPayment];
+
+  document.getElementById("receiptItems").innerHTML = cart.map(item => `
+    <div class="receipt-item">
+      <div>
+        <div class="receipt-item-name">${item.icon} ${item.name}</div>
+        <div class="receipt-item-qty">x${item.qty} &#8369;${item.price} each</div>
+      </div>
+      <div class="receipt-item-price">&#8369;${item.price * item.qty}</div>
+    </div>
+  `).join("");
+}
+
+// Checkout
+checkoutBtn.addEventListener("click", () => {
+  if (cart.length === 0) return;
+  generateReceipt();
+  closeCartSidebar();
+  modalOverlay.classList.add("active");
+});
+
+closeModal.addEventListener("click", () => {
+  modalOverlay.classList.remove("active");
+  cart = [];
+  selectedDelivery = "pickup";
+  selectedPayment = "cash";
+  document.querySelectorAll(".delivery-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector(".delivery-btn[data-delivery='pickup']").classList.add("active");
+  document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector(".payment-btn[data-payment='cash']").classList.add("active");
+  updateCart();
+});
+
+// Contact
 contactForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const btn = contactForm.querySelector("button");
-  btn.innerHTML = `
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-    Sent!
-  `;
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Sent!`;
   btn.style.background = "#16a34a";
   setTimeout(() => {
     btn.innerHTML = `Send Message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>`;
     btn.style.background = "";
     contactForm.reset();
-  }, 2000);
+  }, 2500);
 });
-
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = "1";
-      entry.target.style.transform = "translateY(0)";
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-
-function initScrollAnimations() {
-  document.querySelectorAll(".feature-card, .menu-card, .about-card, .contact-form").forEach((el, i) => {
-    el.style.opacity = "0";
-    el.style.transform = "translateY(20px)";
-    el.style.transition = `opacity 0.5s ease ${i * 0.08}s, transform 0.5s ease ${i * 0.08}s`;
-    observer.observe(el);
-  });
-}
 
 // Init
 renderMenu();
-initScrollAnimations();
+updateCart();
