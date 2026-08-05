@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,17 +31,17 @@
         </div>
       </a>
       <div class="header-actions">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
         <button class="cart-btn" id="cartBtn" aria-label="Open cart">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
             <line x1="3" y1="6" x2="21" y2="6"/>
             <path d="M16 10a4 4 0 0 1-8 0"/>
           </svg>
           <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
         <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="16" y2="12"/><line x1="3" y1="18" x2="12" y2="18"/></svg>
@@ -60,6 +60,7 @@
       <a href="#how" class="fullscreen-link">How It Works</a>
       <a href="#about" class="fullscreen-link">About</a>
       <a href="#contact" class="fullscreen-link">Contact</a>
+      <a href="#history" class="fullscreen-link">Order History</a>
     </nav>
     <div class="fullscreen-footer">
       <p>Pre-order your favorite tubs</p>
@@ -199,6 +200,29 @@
     </div>
   </section>
 
+  <!-- Order History -->
+  <section class="history-section" id="history">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Your Orders</span>
+        <h2 class="section-title">Order <span class="accent">History</span></h2>
+      </div>
+      <div class="history-list" id="historyList">
+        <div class="empty-history">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <p>No orders yet</p>
+          <span>Your order history will appear here</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Contact -->
   <section class="contact" id="contact">
     <div class="container">
@@ -281,17 +305,9 @@
       </div>
     </div>
     <div class="cart-footer">
-      <div class="cart-subtotal">
-        <span>Subtotal</span>
-        <span>&#8369;<span id="cartSubtotal">0</span></span>
-      </div>
-      <div class="cart-delivery">
-        <span>Delivery</span>
-        <span id="deliveryFee">-</span>
-      </div>
-      <div class="cart-total-row">
-        <span>Total</span>
-        <span class="cart-total">&#8369;<span id="cartTotal">0</span></span>
+      <div class="cart-name">
+        <label class="name-label">Your Name</label>
+        <input type="text" id="customerName" class="name-input" placeholder="Enter your name" required>
       </div>
 
       <div class="delivery-options">
@@ -321,6 +337,19 @@
         </div>
       </div>
 
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <span>&#8369;<span id="cartSubtotal">0</span></span>
+      </div>
+      <div class="cart-delivery">
+        <span>Delivery</span>
+        <span id="deliveryFee">Free</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Total</span>
+        <span class="cart-total">&#8369;<span id="cartTotal">0</span></span>
+      </div>
+
       <button class="btn btn-primary btn-full" id="checkoutBtn">
         Place Order
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -331,16 +360,17 @@
   <!-- Receipt Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal receipt-modal">
-      <div class="receipt">
+      <div class="receipt" id="receiptContent">
         <div class="receipt-header">
           <div class="receipt-logo">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <svg width="40" height="40" viewBox="0 0 36 36" fill="none">
               <rect x="6" y="14" width="24" height="16" rx="3" fill="var(--dark)"/>
               <path d="M8 14C8 10 12 6 18 6C24 6 28 10 28 14" stroke="var(--dark)" stroke-width="2.5" fill="none"/>
               <ellipse cx="18" cy="14" rx="12" ry="3" fill="var(--dark)"/>
             </svg>
           </div>
           <h3>A & J Signature Tubs</h3>
+          <p class="receipt-customer" id="receiptCustomer"></p>
           <p class="receipt-date" id="receiptDate"></p>
           <p class="receipt-id" id="receiptId"></p>
         </div>
@@ -372,15 +402,21 @@
             <span id="receiptPayment"></span>
           </div>
         </div>
+        <div class="receipt-screenshot-info">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <p>Screenshot this receipt and send it to the seller to confirm your order.</p>
+        </div>
         <div class="receipt-footer">
           <p>Thank you for your order!</p>
           <p class="receipt-contact">allancabase13@gmail.com | 09669170001</p>
         </div>
       </div>
-      <button class="btn btn-primary" id="closeModal">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        Order Confirmed
-      </button>
+      <div class="modal-actions">
+        <button class="btn btn-primary btn-full" id="closeModal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Order Confirmed
+        </button>
+      </div>
     </div>
   </div>
 

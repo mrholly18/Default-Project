@@ -1,9 +1,9 @@
 const menu = [
-  { id: 1, name: "Lasagna", desc: "Classic layered pasta with rich meat sauce", price: 200, category: "pasta", icon: "🍝" },
-  { id: 2, name: "Carbonara", desc: "Creamy egg-based pasta with crispy bits", price: 180, category: "pasta", icon: "🧀" },
-  { id: 3, name: "Mango Graham", desc: "Sweet mangoes layered with graham crackers", price: 150, category: "dessert", icon: "🥭" },
-  { id: 4, name: "Oreo Cheesecake", desc: "No-bake cheesecake with Oreo cookie crust", price: 150, category: "dessert", icon: "🍪" },
-  { id: 5, name: "Champorado", desc: "Chocolate rice porridge", price: 50, category: "others", icon: "🍫" }
+  { id: 1, name: "Lasagna", desc: "Classic layered pasta with rich meat sauce", price: 200, category: "pasta", icon: "\uD83C\uDF5D" },
+  { id: 2, name: "Carbonara", desc: "Creamy egg-based pasta with crispy bits", price: 180, category: "pasta", icon: "\uD83E\uDDC0" },
+  { id: 3, name: "Mango Graham", desc: "Sweet mangoes layered with graham crackers", price: 150, category: "dessert", icon: "\uD83E\uDD6D" },
+  { id: 4, name: "Oreo Cheesecake", desc: "No-bake cheesecake with Oreo cookie crust", price: 150, category: "dessert", icon: "\uD83C\uDF6A" },
+  { id: 5, name: "Champorado", desc: "Chocolate rice porridge", price: 50, category: "others", icon: "\uD83C\uDF6B" }
 ];
 
 let cart = [];
@@ -15,7 +15,7 @@ const menuGrid = document.getElementById("menuGrid");
 const cartItems = document.getElementById("cartItems");
 const cartCount = document.getElementById("cartCount");
 const cartSubtotal = document.getElementById("cartSubtotal");
-const deliveryFee = document.getElementById("deliveryFee");
+const deliveryFeeEl = document.getElementById("deliveryFee");
 const cartTotal = document.getElementById("cartTotal");
 const cartSidebar = document.getElementById("cartSidebar");
 const overlay = document.getElementById("overlay");
@@ -29,16 +29,18 @@ const navClose = document.getElementById("navClose");
 const modalOverlay = document.getElementById("modalOverlay");
 const closeModal = document.getElementById("closeModal");
 const themeToggle = document.getElementById("themeToggle");
+const customerNameInput = document.getElementById("customerName");
+const historyList = document.getElementById("historyList");
 
-// Theme
-const savedTheme = localStorage.getItem("theme") || "light";
+// Theme - default dark
+const savedTheme = localStorage.getItem("aj-theme") || "dark";
 document.documentElement.setAttribute("data-theme", savedTheme);
 
 themeToggle.addEventListener("click", () => {
   const current = document.documentElement.getAttribute("data-theme");
   const next = current === "light" ? "dark" : "light";
   document.documentElement.setAttribute("data-theme", next);
-  localStorage.setItem("theme", next);
+  localStorage.setItem("aj-theme", next);
 });
 
 // Fullscreen Nav
@@ -90,8 +92,8 @@ function addToCart(id) {
   if (existing) existing.qty++;
   else cart.push({ ...item, qty: 1 });
   updateCart();
-  cartBtn.classList.add("added");
-  setTimeout(() => cartBtn.classList.remove("added"), 300);
+  cartBtn.classList.add("bounce");
+  setTimeout(() => cartBtn.classList.remove("bounce"), 400);
 }
 
 function removeFromCart(id) {
@@ -121,7 +123,7 @@ function updateCart() {
   cartCount.textContent = totalItems;
   cartCount.classList.toggle("visible", totalItems > 0);
   cartSubtotal.textContent = subtotal;
-  deliveryFee.textContent = fee === 0 ? "Free" : fee;
+  deliveryFeeEl.textContent = fee === 0 ? "Free" : "\u20B1" + fee;
   cartTotal.textContent = total;
 
   if (cart.length === 0) {
@@ -190,45 +192,141 @@ function closeCartSidebar() {
 closeCart.addEventListener("click", closeCartSidebar);
 overlay.addEventListener("click", closeCartSidebar);
 
+// Generate unique order ID
+function generateOrderId() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  const h = String(now.getHours()).padStart(2, "0");
+  const min = String(now.getMinutes()).padStart(2, "0");
+  const s = String(now.getSeconds()).padStart(2, "0");
+  const rand = String(Math.floor(Math.random() * 9000) + 1000);
+  return `AJ-${y}${m}${d}-${h}${min}${s}-${rand}`;
+}
+
+// Order History
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem("aj-orders")) || []; }
+  catch { return []; }
+}
+
+function saveOrder(order) {
+  const history = getHistory();
+  history.unshift(order);
+  localStorage.setItem("aj-orders", JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = getHistory();
+  if (history.length === 0) {
+    historyList.innerHTML = `
+      <div class="empty-history">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        <p>No orders yet</p>
+        <span>Your order history will appear here</span>
+      </div>`;
+    return;
+  }
+
+  historyList.innerHTML = history.map(order => {
+    const itemsList = order.items.map(i => `${i.icon} ${i.name} x${i.qty}`).join(", ");
+    return `
+      <div class="history-card" onclick="viewReceipt('${order.id}')">
+        <div class="history-card-header">
+          <span class="history-card-id">${order.id}</span>
+          <span class="history-card-date">${order.date}</span>
+        </div>
+        <div class="history-card-name">${order.customer}</div>
+        <div class="history-card-items">${itemsList}</div>
+        <div class="history-card-footer">
+          <span class="history-card-total">&#8369;${order.total}</span>
+          <span class="history-card-badge">Confirmed</span>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function viewReceipt(orderId) {
+  const history = getHistory();
+  const order = history.find(o => o.id === orderId);
+  if (!order) return;
+  showReceiptModal(order);
+}
+
 // Receipt
+function showReceiptModal(order) {
+  document.getElementById("receiptCustomer").textContent = "Customer: " + order.customer;
+  document.getElementById("receiptDate").textContent = order.date;
+  document.getElementById("receiptId").textContent = order.id;
+  document.getElementById("receiptSubtotal").textContent = "\u20B1" + order.subtotal;
+  document.getElementById("receiptDelivery").textContent = order.deliveryFee === 0 ? "Free" : "\u20B1" + order.deliveryFee;
+  document.getElementById("receiptTotal").textContent = "\u20B1" + order.total;
+
+  const deliveryLabels = { pickup: "Pickup (Free)", nearby: "Nearby Delivery (+\u20B150)", lalamove: "Lalamove (Arrange with rider)" };
+  const paymentLabels = { cash: "Cash", gcash: "GCash", bank: "Bank Transfer" };
+
+  document.getElementById("receiptDeliveryType").textContent = deliveryLabels[order.delivery] || order.delivery;
+  document.getElementById("receiptPayment").textContent = paymentLabels[order.payment] || order.payment;
+
+  document.getElementById("receiptItems").innerHTML = order.items.map(item => `
+    <div class="receipt-item">
+      <div>
+        <div class="receipt-item-name">${item.icon} ${item.name}</div>
+        <div class="receipt-item-qty">x${item.qty} \u20B1${item.price} each</div>
+      </div>
+      <div class="receipt-item-price">\u20B1${item.price * item.qty}</div>
+    </div>
+  `).join("");
+
+  modalOverlay.classList.add("active");
+}
+
 function generateReceipt() {
   const now = new Date();
   const dateStr = now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   const timeStr = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-  const orderId = "AJ-" + now.getFullYear() + String(now.getMonth() + 1).padStart(2, "0") + String(now.getDate()).padStart(2, "0") + "-" + String(Math.floor(Math.random() * 9000) + 1000);
+  const orderId = generateOrderId();
 
   const subtotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
   const fee = getDeliveryFee();
   const total = subtotal + fee;
+  const customerName = customerNameInput.value.trim() || "Walk-in Customer";
 
-  const deliveryLabels = { pickup: "Pickup (Free)", nearby: "Nearby Delivery (+&#8369;50)", lalamove: "Lalamove (Arrange with rider)" };
-  const paymentLabels = { cash: "Cash", gcash: "GCash", bank: "Bank Transfer" };
+  const order = {
+    id: orderId,
+    customer: customerName,
+    date: dateStr + " " + timeStr,
+    items: JSON.parse(JSON.stringify(cart)),
+    subtotal,
+    deliveryFee: fee,
+    total,
+    delivery: selectedDelivery,
+    payment: selectedPayment
+  };
 
-  document.getElementById("receiptDate").textContent = dateStr + " " + timeStr;
-  document.getElementById("receiptId").textContent = orderId;
-  document.getElementById("receiptSubtotal").textContent = "\u20B1" + subtotal;
-  document.getElementById("receiptDelivery").textContent = fee === 0 ? "Free" : "\u20B1" + fee;
-  document.getElementById("receiptTotal").textContent = "\u20B1" + total;
-  document.getElementById("receiptDeliveryType").textContent = deliveryLabels[selectedDelivery];
-  document.getElementById("receiptPayment").textContent = paymentLabels[selectedPayment];
-
-  document.getElementById("receiptItems").innerHTML = cart.map(item => `
-    <div class="receipt-item">
-      <div>
-        <div class="receipt-item-name">${item.icon} ${item.name}</div>
-        <div class="receipt-item-qty">x${item.qty} &#8369;${item.price} each</div>
-      </div>
-      <div class="receipt-item-price">&#8369;${item.price * item.qty}</div>
-    </div>
-  `).join("");
+  saveOrder(order);
+  showReceiptModal(order);
 }
 
 // Checkout
 checkoutBtn.addEventListener("click", () => {
   if (cart.length === 0) return;
+  if (!customerNameInput.value.trim()) {
+    customerNameInput.style.borderColor = "#ef4444";
+    customerNameInput.focus();
+    setTimeout(() => { customerNameInput.style.borderColor = ""; }, 2000);
+    return;
+  }
   generateReceipt();
   closeCartSidebar();
-  modalOverlay.classList.add("active");
 });
 
 closeModal.addEventListener("click", () => {
@@ -236,6 +334,7 @@ closeModal.addEventListener("click", () => {
   cart = [];
   selectedDelivery = "pickup";
   selectedPayment = "cash";
+  customerNameInput.value = "";
   document.querySelectorAll(".delivery-btn").forEach(b => b.classList.remove("active"));
   document.querySelector(".delivery-btn[data-delivery='pickup']").classList.add("active");
   document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
@@ -259,3 +358,4 @@ contactForm.addEventListener("submit", (e) => {
 // Init
 renderMenu();
 updateCart();
+renderHistory();
