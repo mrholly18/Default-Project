@@ -6,8 +6,12 @@ const menuItems = [
   { id: 4, name: "Oreo Cheesecake", category: "dessert", price: 150, emoji: "\uD83C\uDF70" },
 ];
 
+const DELIVERY_FEE = 50;
+
 // State
 let cart = [];
+let selectedDelivery = "pickup";
+let selectedPayment = "cash";
 
 // DOM Elements
 const menuGrid = document.getElementById("menuGrid");
@@ -17,19 +21,40 @@ const overlay = document.getElementById("overlay");
 const closeCart = document.getElementById("closeCart");
 const cartItems = document.getElementById("cartItems");
 const cartCount = document.getElementById("cartCount");
+const cartSubtotal = document.getElementById("cartSubtotal");
 const cartTotal = document.getElementById("cartTotal");
+const deliveryFeeEl = document.getElementById("deliveryFee");
 const checkoutBtn = document.getElementById("checkoutBtn");
 const modalOverlay = document.getElementById("modalOverlay");
 const closeModalBtn = document.getElementById("closeModal");
 const orderSummary = document.getElementById("orderSummary");
-const hamburger = document.getElementById("hamburger");
-const mobileNav = document.getElementById("mobileNav");
+const menuToggle = document.getElementById("menuToggle");
+const fullscreenNav = document.getElementById("fullscreenNav");
+const navClose = document.getElementById("navClose");
 const contactForm = document.getElementById("contactForm");
 const header = document.getElementById("header");
 
 // Scroll Header
 window.addEventListener("scroll", () => {
   header.classList.toggle("scrolled", window.scrollY > 50);
+});
+
+// Fullscreen Nav
+menuToggle.addEventListener("click", () => {
+  fullscreenNav.classList.add("open");
+  document.body.style.overflow = "hidden";
+});
+
+navClose.addEventListener("click", () => {
+  fullscreenNav.classList.remove("open");
+  document.body.style.overflow = "";
+});
+
+fullscreenNav.querySelectorAll(".fullscreen-link").forEach(link => {
+  link.addEventListener("click", () => {
+    fullscreenNav.classList.remove("open");
+    document.body.style.overflow = "";
+  });
 });
 
 // Render Menu
@@ -41,7 +66,7 @@ function renderMenu(category = "all") {
       <div class="menu-card-body">
         <span class="category">${item.category}</span>
         <h3>${item.name}</h3>
-        <div class="price">\u20B1${item.price.toFixed(0)}</div>
+        <div class="price">\u20B1${item.price}</div>
         <button class="add-btn" onclick="addToCart(${item.id}, this)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
           Add to Order
@@ -61,7 +86,6 @@ function addToCart(id, btnEl) {
   }
   updateCart();
 
-  // Button feedback
   if (btnEl) {
     btnEl.classList.add("added");
     btnEl.innerHTML = `
@@ -77,7 +101,6 @@ function addToCart(id, btnEl) {
     }, 1200);
   }
 
-  // Bounce cart count
   cartCount.classList.add("show");
   cartCount.style.transform = "scale(1.3)";
   setTimeout(() => { cartCount.style.transform = "scale(1)"; }, 200);
@@ -120,23 +143,25 @@ function updateCart() {
           <path d="M16 10a4 4 0 0 1-8 0"/>
         </svg>
         <p>Your cart is empty</p>
-        <span>Add items from the menu to get started</span>
+        <span>Add items from the menu</span>
       </div>
     `;
+    cartSubtotal.textContent = "0";
     cartTotal.textContent = "0";
+    deliveryFeeEl.textContent = "-";
     return;
   }
 
-  let total = 0;
+  let subtotal = 0;
   cartItems.innerHTML = cart.map(ci => {
     const item = menuItems.find(m => m.id === ci.id);
-    const subtotal = item.price * ci.qty;
-    total += subtotal;
+    const itemTotal = item.price * ci.qty;
+    subtotal += itemTotal;
     return `
       <div class="cart-item">
         <div class="cart-item-info">
           <h4>${item.name}</h4>
-          <span class="item-price">\u20B1${subtotal.toFixed(0)}</span>
+          <span class="item-price">\u20B1${itemTotal} ${ci.qty > 1 ? `(x${ci.qty})` : ""}</span>
         </div>
         <div class="cart-item-qty">
           <button class="qty-btn" onclick="changeQty(${item.id}, -1)">
@@ -151,7 +176,12 @@ function updateCart() {
     `;
   }).join("");
 
-  cartTotal.textContent = total.toFixed(0);
+  const delivery = selectedDelivery === "lalamove" ? DELIVERY_FEE : 0;
+  const total = subtotal + delivery;
+
+  cartSubtotal.textContent = subtotal;
+  deliveryFeeEl.textContent = delivery > 0 ? `\u20B1${delivery}` : "Free";
+  cartTotal.textContent = total;
 }
 
 function openCart() {
@@ -166,31 +196,65 @@ function closeCartSidebar() {
   document.body.style.overflow = "";
 }
 
+// Delivery Options
+document.querySelectorAll(".delivery-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".delivery-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedDelivery = btn.dataset.delivery;
+    updateCart();
+  });
+});
+
+// Payment Options
+document.querySelectorAll(".payment-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedPayment = btn.dataset.payment;
+  });
+});
+
 // Checkout
 function checkout() {
   if (cart.length === 0) return;
 
-  const pickupTime = document.getElementById("pickupTime").value || "ASAP";
-  const total = cart.reduce((sum, ci) => {
+  const subtotal = cart.reduce((sum, ci) => {
     const item = menuItems.find(m => m.id === ci.id);
     return sum + item.price * ci.qty;
   }, 0);
 
+  const delivery = selectedDelivery === "lalamove" ? DELIVERY_FEE : 0;
+  const total = subtotal + delivery;
+
   const itemsList = cart.map(ci => {
     const item = menuItems.find(m => m.id === ci.id);
-    return `${item.emoji} ${item.name} &times; ${ci.qty}`;
+    return `${item.emoji} ${item.name} x${ci.qty}`;
   }).join("<br>");
+
+  const deliveryLabel = selectedDelivery === "pickup" ? "Pickup" : "Lalamove Delivery (+\u20B150)";
+  const paymentLabel = selectedPayment.charAt(0).toUpperCase() + selectedPayment.slice(1);
 
   orderSummary.innerHTML = `
     <strong>Items:</strong><br>${itemsList}<br><br>
-    <strong>Total:</strong> \u20B1${total.toFixed(0)}<br>
-    <strong>Pickup:</strong> ${pickupTime}
+    <strong>Subtotal:</strong> \u20B1${subtotal}<br>
+    <strong>Delivery:</strong> ${delivery > 0 ? `\u20B1${delivery}` : "Free"}<br>
+    <strong>Total:</strong> \u20B1${total}<br><br>
+    <strong>Delivery:</strong> ${deliveryLabel}<br>
+    <strong>Payment:</strong> ${paymentLabel}
   `;
 
   modalOverlay.classList.add("open");
   closeCartSidebar();
   cart = [];
+  selectedDelivery = "pickup";
+  selectedPayment = "cash";
   updateCart();
+
+  document.querySelectorAll(".delivery-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector('.delivery-btn[data-delivery="pickup"]').classList.add("active");
+  document.querySelectorAll(".payment-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector('.payment-btn[data-payment="cash"]').classList.add("active");
 }
 
 // Filter Buttons
@@ -208,18 +272,6 @@ closeCart.addEventListener("click", closeCartSidebar);
 overlay.addEventListener("click", closeCartSidebar);
 checkoutBtn.addEventListener("click", checkout);
 closeModalBtn.addEventListener("click", () => modalOverlay.classList.remove("open"));
-
-hamburger.addEventListener("click", () => {
-  hamburger.classList.toggle("active");
-  mobileNav.classList.toggle("open");
-});
-
-mobileNav.querySelectorAll("a").forEach(link => {
-  link.addEventListener("click", () => {
-    hamburger.classList.remove("active");
-    mobileNav.classList.remove("open");
-  });
-});
 
 contactForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -248,7 +300,7 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
 
 function initScrollAnimations() {
-  document.querySelectorAll(".feature-card, .menu-card, .about-feature, .about-card, .contact-form").forEach((el, i) => {
+  document.querySelectorAll(".feature-card, .menu-card, .about-card, .contact-form").forEach((el, i) => {
     el.style.opacity = "0";
     el.style.transform = "translateY(20px)";
     el.style.transition = `opacity 0.5s ease ${i * 0.08}s, transform 0.5s ease ${i * 0.08}s`;
